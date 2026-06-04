@@ -6,13 +6,12 @@ export const CONTACT = {
   whatsapp: "+91 8433128428",
   whatsappRaw: "918433128428",
   location: "Dehradun, Uttarakhand",
-  email: "poornima.homecare@gmail.com",
 };
 
 export const SERVICES = [
   {
     name: "Injection Support",
-    price: "₹300",
+    price: "₹100",
     unit: "/ visit",
     desc: "Safe administration of prescribed IM/IV/SC injections at the comfort of your home.",
     icon: "syringe",
@@ -20,23 +19,15 @@ export const SERVICES = [
   },
   {
     name: "Wound Dressing",
-    price: "₹500",
+    price: "₹300",
     unit: "/ visit",
     desc: "Sterile cleaning and dressing of wounds, post-surgical care, and bandage changes.",
     icon: "bandage",
     popular: true,
   },
   {
-    name: "Elderly & Patient Care",
-    price: "₹600",
-    unit: "/ visit",
-    desc: "Compassionate day care, mobility help, hygiene and medication reminders for seniors.",
-    icon: "heart",
-    popular: false,
-  },
-  {
     name: "Vitals Monitoring",
-    price: "₹250",
+    price: "₹200",
     unit: "/ visit",
     desc: "BP, sugar, temperature and oxygen level checks with a clear, easy-to-read report.",
     icon: "pulse",

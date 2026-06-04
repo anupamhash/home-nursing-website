@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Icon from "./components/Icon.jsx";
 import useReveal from "./useReveal.js";
-import { CONTACT, SERVICES, FEATURES, STEPS, TESTIMONIALS, FAQS } from "./data.js";
+import { CONTACT, SERVICES, TESTIMONIALS, FAQS } from "./data.js";
 
 const telHref = `tel:${CONTACT.phoneRaw}`;
 const waHref = `https://wa.me/${CONTACT.whatsappRaw}?text=${encodeURIComponent(
@@ -10,10 +10,9 @@ const waHref = `https://wa.me/${CONTACT.whatsappRaw}?text=${encodeURIComponent(
 
 const NAV_LINKS = [
   { label: "Home", href: "#home" },
-  { label: "About", href: "#about" },
   { label: "Services", href: "#services" },
-  { label: "Why Us", href: "#why" },
   { label: "Reviews", href: "#reviews" },
+  { label: "About", href: "#about" },
   { label: "Contact", href: "#contact" },
 ];
 
@@ -93,7 +92,7 @@ function Hero() {
   return (
     <section
       id="home"
-      className="relative overflow-hidden pt-28 pb-20 sm:pt-36 sm:pb-28"
+      className="relative overflow-hidden pt-28"
     >
       <div className="absolute inset-0 -z-10 bg-gradient-to-b from-brand-50 via-white to-white" />
       <div className="absolute -top-24 -right-24 -z-10 h-80 w-80 rounded-full bg-brand-200/50 blur-3xl" />
@@ -106,18 +105,27 @@ function Hero() {
             Trusted home care in {CONTACT.location.split(",")[0]}
           </span>
 
-          <h1 className="mt-6 text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-[1.1] text-slate-900">
+          {/* <h1 className="mt-6 text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-[1.1] text-slate-900">
             Professional nursing care,{" "}
             <span className="bg-gradient-to-r from-brand-600 to-accent bg-clip-text text-transparent">
               right at your home
             </span>
-          </h1>
+          </h1> */}
+          <h1 className="mt-6 text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-[1.1] text-slate-900">
+          Home Nursing Services &
+          <span className="bg-gradient-to-r from-brand-600 to-accent bg-clip-text text-transparent">
+            Patient Care at Home
+          </span>
+        </h1>
 
-          <p className="mt-6 text-lg text-slate-600 max-w-xl mx-auto lg:mx-0">
+          {/* <p className="mt-6 text-lg text-slate-600 max-w-xl mx-auto lg:mx-0">
             Injections, wound dressing and more — delivered with
             warmth, hygiene and care by an experienced nursing professional.
-          </p>
-
+          </p> */}
+            <p className="mt-6 text-lg text-slate-600 max-w-xl mx-auto lg:mx-0">
+              Professional Home Nursing Services and Nursing Care at Home in Dehradun.
+              We provide injection support, wound dressing. Looking for a Home Nurse Near Me? Contact us today.
+            </p>
           <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
             <a
               href={waHref}
@@ -244,15 +252,16 @@ function About() {
           <p className="text-sm font-semibold uppercase tracking-wider text-brand-600">
             About
           </p>
-          <h2 className="mt-2 text-3xl sm:text-4xl font-extrabold text-slate-900">
-            Caring for you like family
-          </h2>
-          <p className="mt-5 text-slate-600 leading-relaxed">
-            I'm <strong className="text-slate-900">{CONTACT.name}</strong>, an
-            experienced home nursing professional providing basic nursing and
-            healthcare support at your doorstep. From injections and wound
-            dressing to elderly and post-operative care, I help patients recover
-            comfortably in the place they feel safest — their own home.
+        <h2 className="mt-2 text-3xl sm:text-4xl font-extrabold text-slate-900">
+        Home Nursing Services in Dehradun
+        </h2>
+         <p className="mt-5 text-slate-600 leading-relaxed">
+            I'm <strong className="text-slate-900">{CONTACT.name}</strong>, providing
+            professional Home Nursing Services and Patient Care at Home in Dehradun.
+            Our Nursing Care at Home includes injection support, wound dressing,
+            elderly care and post-hospital care. If you are searching for a
+            Home Nurse Near Me, we offer reliable and affordable nursing support
+            at your doorstep.
           </p>
           <p className="mt-4 text-slate-600 leading-relaxed">
             Every visit is carried out with strict hygiene, sterile supplies and
@@ -275,15 +284,7 @@ function About() {
             ))}
           </ul>
 
-          <a
-            href={waHref}
-            target="_blank"
-            rel="noreferrer"
-            className="mt-8 inline-flex items-center gap-2 rounded-full bg-brand-600 px-6 py-3 font-semibold text-white shadow-lg shadow-brand-600/30 hover:bg-brand-700 transition"
-          >
-            <Icon name="whatsapp" filled className="w-5 h-5" />
-            Talk to me
-          </a>
+       
         </div>
       </div>
     </section>
@@ -296,7 +297,7 @@ function Services() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <SectionHeading
           eyebrow="Services & Charges"
-          title="Care services we offer"
+          title="Home Nursing Services & Charges"
           sub="Transparent per-visit pricing with no hidden charges. Final charges may vary slightly based on requirements and distance."
         />
 
@@ -537,15 +538,12 @@ function Contact() {
     <section id="contact" className="py-20 sm:py-24 bg-slate-50">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 grid lg:grid-cols-2 gap-10">
         <div className="reveal">
-          <p className="text-sm font-semibold uppercase tracking-wider text-brand-600">
-            Contact
-          </p>
+        
           <h2 className="mt-2 text-3xl sm:text-4xl font-extrabold text-slate-900">
-            Book a visit today
+            Contact
           </h2>
           <p className="mt-4 text-slate-600">
-            Call, WhatsApp, or send a quick request and we'll get back to you to
-            confirm a convenient time.
+            Call, WhatsApp to confirm a convenient time.
           </p>
 
           <div className="mt-8 space-y-4">
@@ -572,66 +570,6 @@ function Contact() {
           </div>
         </div>
 
-        <form
-          onSubmit={onSubmit}
-          className="reveal rounded-3xl bg-white p-7 sm:p-8 border border-slate-100 shadow-lg"
-        >
-          <h3 className="text-xl font-bold text-slate-900">Request a callback</h3>
-          <p className="mt-1 text-sm text-slate-500">
-            Sends your details to us on WhatsApp.
-          </p>
-
-          <div className="mt-6 space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1.5">
-                Your name
-              </label>
-              <input
-                name="name"
-                required
-                placeholder="e.g. Rahul Sharma"
-                className="w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100 transition"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1.5">
-                Phone number
-              </label>
-              <input
-                name="phone"
-                required
-                type="tel"
-                placeholder="e.g. 98765 43210"
-                className="w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100 transition"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1.5">
-                What care do you need?
-              </label>
-              <textarea
-                name="need"
-                required
-                rows={3}
-                placeholder="e.g. Daily injection for my father at home"
-                className="w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100 transition resize-none"
-              />
-            </div>
-          </div>
-
-          <button
-            type="submit"
-            className="mt-6 w-full inline-flex items-center justify-center gap-2 rounded-full bg-brand-600 px-6 py-3.5 font-semibold text-white shadow-lg shadow-brand-600/30 hover:bg-brand-700 transition"
-          >
-            <Icon name="whatsapp" filled className="w-5 h-5" />
-            Send request
-          </button>
-          {sent && (
-            <p className="mt-3 text-center text-sm text-accent font-medium">
-              Opening WhatsApp… thank you!
-            </p>
-          )}
-        </form>
       </div>
     </section>
   );
@@ -668,8 +606,8 @@ function Footer() {
             </div>
           </div>
           <p className="mt-4 text-sm text-slate-400 max-w-xs leading-relaxed">
-            Compassionate, professional nursing care delivered at your doorstep
-            in {CONTACT.location}.
+            Professional Home Nursing Services, Nursing Care at Home and Patient Care
+            at Home delivered at your doorstep in {CONTACT.location}.
           </p>
         </div>
 
@@ -750,8 +688,6 @@ function App() {
         <Hero />
         <About />
         <Services />
-        <WhyUs />
-        <Process />
         <Testimonials />
         <Faq />
         <Contact />
