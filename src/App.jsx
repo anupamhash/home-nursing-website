@@ -1,106 +1,764 @@
-function App() {
-  const services = [
-    {
-      name: "Injection Support",
-      price: "₹300 Visit",
-    },
-    {
-      name: "Dressing",
-      price: "₹500 Visit",
-    }
-  ];
+import { useState } from "react";
+import Icon from "./components/Icon.jsx";
+import useReveal from "./useReveal.js";
+import { CONTACT, SERVICES, FEATURES, STEPS, TESTIMONIALS, FAQS } from "./data.js";
 
+const telHref = `tel:${CONTACT.phoneRaw}`;
+const waHref = `https://wa.me/${CONTACT.whatsappRaw}?text=${encodeURIComponent(
+  "Hi, I would like to book a home nursing visit."
+)}`;
+
+const NAV_LINKS = [
+  { label: "Home", href: "#home" },
+  { label: "About", href: "#about" },
+  { label: "Services", href: "#services" },
+  { label: "Why Us", href: "#why" },
+  { label: "Reviews", href: "#reviews" },
+  { label: "Contact", href: "#contact" },
+];
+
+function Navbar() {
+  const [open, setOpen] = useState(false);
   return (
-    <div className="min-h-screen bg-slate-100">
+    <header className="fixed top-0 inset-x-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-100 shadow-sm">
+      <nav className="mx-auto max-w-6xl px-4 sm:px-6 h-16 flex items-center justify-between">
+        <a href="#home" className="flex items-center gap-2.5">
+          <span className="grid place-items-center w-10 h-10 rounded-xl bg-gradient-to-br from-brand-500 to-brand-700 text-white shadow-lg shadow-brand-500/30">
+            <Icon name="heart" filled className="w-5 h-5" />
+          </span>
+          <span className="leading-tight">
+            <span className="block font-bold text-slate-900">Poornima</span>
+            <span className="block text-[11px] tracking-wide text-brand-600 font-medium -mt-0.5">
+              HOME NURSING CARE
+            </span>
+          </span>
+        </a>
 
-      {/* MAIN CONTAINER */}
-      <div className="bg-white shadow-xl">
+        <ul className="hidden md:flex items-center gap-7 text-sm font-medium text-slate-600">
+          {NAV_LINKS.map((l) => (
+            <li key={l.href}>
+              <a href={l.href} className="hover:text-brand-600 transition-colors">
+                {l.label}
+              </a>
+            </li>
+          ))}
+        </ul>
 
-        {/* HEADER */}
-        <div className="bg-blue-600 text-white py-1 px-5 text-center">
-          <h1 className="text-5xl font-bold mb-3">
-            Home Nursing Care
+        <a
+          href={telHref}
+          className="hidden md:inline-flex items-center gap-2 rounded-full bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-brand-600/30 hover:bg-brand-700 transition"
+        >
+          <Icon name="phone" className="w-4 h-4" />
+          Call Now
+        </a>
+
+        <button
+          className="md:hidden grid place-items-center w-10 h-10 rounded-lg text-slate-700 hover:bg-slate-100"
+          onClick={() => setOpen((v) => !v)}
+          aria-label="Toggle menu"
+        >
+          <Icon name={open ? "close" : "menu"} className="w-6 h-6" />
+        </button>
+      </nav>
+
+      {open && (
+        <div className="md:hidden border-t border-slate-100 bg-white px-4 py-4">
+          <ul className="flex flex-col gap-1">
+            {NAV_LINKS.map((l) => (
+              <li key={l.href}>
+                <a
+                  href={l.href}
+                  onClick={() => setOpen(false)}
+                  className="block rounded-lg px-3 py-2.5 text-slate-700 font-medium hover:bg-brand-50 hover:text-brand-600"
+                >
+                  {l.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+          <a
+            href={telHref}
+            className="mt-3 flex items-center justify-center gap-2 rounded-full bg-brand-600 px-5 py-3 text-sm font-semibold text-white"
+          >
+            <Icon name="phone" className="w-4 h-4" />
+            Call {CONTACT.phone}
+          </a>
+        </div>
+      )}
+    </header>
+  );
+}
+
+function Hero() {
+  return (
+    <section
+      id="home"
+      className="relative overflow-hidden pt-28 pb-20 sm:pt-36 sm:pb-28"
+    >
+      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-brand-50 via-white to-white" />
+      <div className="absolute -top-24 -right-24 -z-10 h-80 w-80 rounded-full bg-brand-200/50 blur-3xl" />
+      <div className="absolute top-40 -left-24 -z-10 h-72 w-72 rounded-full bg-accent/20 blur-3xl" />
+
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 grid lg:grid-cols-2 gap-12 items-center">
+        <div className="animate-fade-up text-center lg:text-left">
+          <span className="inline-flex items-center gap-2 rounded-full bg-white border border-brand-100 px-4 py-1.5 text-sm font-medium text-brand-700 shadow-sm">
+            <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
+            Trusted home care in {CONTACT.location.split(",")[0]}
+          </span>
+
+          <h1 className="mt-6 text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-[1.1] text-slate-900">
+            Professional nursing care,{" "}
+            <span className="bg-gradient-to-r from-brand-600 to-accent bg-clip-text text-transparent">
+              right at your home
+            </span>
           </h1>
 
-          <p className="text-2xl">
-            Basic Nursing & Home Healthcare Services
+          <p className="mt-6 text-lg text-slate-600 max-w-xl mx-auto lg:mx-0">
+            Injections, wound dressing and more — delivered with
+            warmth, hygiene and care by an experienced nursing professional.
           </p>
+
+          <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
+            <a
+              href={waHref}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-brand-600 px-7 py-3.5 font-semibold text-white shadow-xl shadow-brand-600/30 hover:bg-brand-700 hover:-translate-y-0.5 transition"
+            >
+              <Icon name="whatsapp" filled className="w-5 h-5" />
+              Book on WhatsApp
+            </a>
+            <a
+              href="#services"
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-white border border-slate-200 px-7 py-3.5 font-semibold text-slate-700 hover:border-brand-300 hover:text-brand-600 transition"
+            >
+              View Services
+            </a>
+          </div>
+
+          <dl className="mt-12 grid grid-cols-3 gap-4 max-w-md mx-auto lg:mx-0">
+            {[
+              { n: "2+ yrs", l: "Experience" },
+              { n: "100+", l: "Visits done" },
+              { n: "100%", l: "At home" },
+            ].map((s) => (
+              <div key={s.l} className="text-center lg:text-left">
+                <dt className="text-2xl font-extrabold text-slate-900">{s.n}</dt>
+                <dd className="text-sm text-slate-500">{s.l}</dd>
+              </div>
+            ))}
+          </dl>
         </div>
 
-        {/* ABOUT */}
-        <div className="py-12 px-2 border-b">
-          <h2 className="text-4xl font-bold mb-6 text-blue-600 text-center">
-            About Me
-          </h2>
-
-          <p className="text-xl text-slate-700 leading-9 text-center max-w-4xl mx-auto">
-            I provide basic nursing and healthcare support at home.
-            Services include injection support,
-            wound dressing, and basic medical assistance.
-            Available in Dehradun and nearby areas.
-          </p>
-        </div>
-
-        {/* SERVICES */}
-        <div className="py-12 px-8 border-b bg-slate-50">
-          <h2 className="text-4xl font-bold mb-10 text-blue-600 text-center">
-            Services & Charges
-          </h2>
-
-          <div className="space-y-6 max-w-4xl mx-auto">
-            {services.map((service, index) => (
-              <div
-                key={index}
-                className="flex justify-between items-center bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition"
-              >
-                <h3 className="text-2xl font-semibold text-slate-700">
-                  {service.name}
-                </h3>
-
-                <span className="bg-blue-600 text-white px-6 py-3 rounded-xl text-lg font-semibold">
-                  {service.price}
+        <div className="relative animate-fade-up">
+          <div className="relative mx-auto max-w-md">
+            <div className="absolute inset-0 rotate-6 rounded-[2.5rem] bg-gradient-to-br from-brand-400 to-accent opacity-20 blur-xl" />
+            <div className="relative rounded-[2.5rem] bg-gradient-to-br from-brand-500 to-brand-700 p-8 text-white shadow-2xl shadow-brand-600/30">
+              <div className="flex items-center gap-3">
+                <span className="grid place-items-center w-12 h-12 rounded-2xl bg-white/15">
+                  <Icon name="stethoscope" className="w-6 h-6" />
                 </span>
+                <div>
+                  <p className="font-semibold">{CONTACT.name}</p>
+                  <p className="text-sm text-white/80">{CONTACT.role}</p>
+                </div>
+              </div>
+              <div className="mt-6 space-y-3">
+                {[
+                  "Doorstep injections & dressing",
+                  "Flexible visit timings",
+                ].map((t) => (
+                  <div key={t} className="flex items-center gap-3 text-sm">
+                    <span className="grid place-items-center w-6 h-6 rounded-full bg-white/20">
+                      <Icon name="check" className="w-3.5 h-3.5" />
+                    </span>
+                    {t}
+                  </div>
+                ))}
+              </div>
+              <a
+                href={telHref}
+                className="mt-7 flex items-center justify-center gap-2 rounded-2xl bg-white px-5 py-3 font-semibold text-brand-700 hover:bg-brand-50 transition"
+              >
+                <Icon name="phone" className="w-4 h-4" />
+                {CONTACT.phone}
+              </a>
+            </div>
+
+            <div className="absolute -bottom-5 -left-5 hidden sm:flex items-center gap-3 rounded-2xl bg-white px-4 py-3 shadow-xl animate-float">
+              <span className="grid place-items-center w-10 h-10 rounded-xl bg-accent/15 text-accent">
+                <Icon name="clock" className="w-5 h-5" />
+              </span>
+              <div className="leading-tight">
+                <p className="text-sm font-bold text-slate-900">Same-day</p>
+                <p className="text-xs text-slate-500">visits available</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function SectionHeading({ eyebrow, title, sub }) {
+  return (
+    <div className="reveal mx-auto max-w-2xl text-center mb-12">
+      <p className="text-sm font-semibold uppercase tracking-wider text-brand-600">
+        {eyebrow}
+      </p>
+      <h2 className="mt-2 text-3xl sm:text-4xl font-extrabold text-slate-900">
+        {title}
+      </h2>
+      {sub && <p className="mt-4 text-slate-600">{sub}</p>}
+    </div>
+  );
+}
+
+function About() {
+  return (
+    <section id="about" className="py-20 sm:py-24 bg-white">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 grid lg:grid-cols-2 gap-12 items-center">
+        <div className="reveal relative">
+          <div className="grid grid-cols-2 gap-4">
+            {[
+              { icon: "heart", t: "Compassion", c: "from-rose-400 to-rose-600" },
+              { icon: "shield", t: "Safety", c: "from-brand-400 to-brand-600" },
+              { icon: "home", t: "At Home", c: "from-emerald-400 to-emerald-600" },
+              { icon: "clock", t: "On Time", c: "from-amber-400 to-orange-500" },
+            ].map((b, i) => (
+              <div
+                key={b.t}
+                className={`rounded-3xl bg-gradient-to-br ${b.c} p-6 text-white shadow-lg ${
+                  i % 2 === 1 ? "mt-6" : ""
+                }`}
+              >
+                <Icon name={b.icon} filled={b.icon === "heart"} className="w-8 h-8" />
+                <p className="mt-4 font-semibold">{b.t}</p>
               </div>
             ))}
           </div>
         </div>
 
-        
-
-        {/* CONTACT */}
-        <div className="py-12 px-8 text-center bg-blue-600 text-white">
-          <h2 className="text-4xl font-bold mb-8">
-            Contact Details
+        <div className="reveal">
+          <p className="text-sm font-semibold uppercase tracking-wider text-brand-600">
+            About
+          </p>
+          <h2 className="mt-2 text-3xl sm:text-4xl font-extrabold text-slate-900">
+            Caring for you like family
           </h2>
+          <p className="mt-5 text-slate-600 leading-relaxed">
+            I'm <strong className="text-slate-900">{CONTACT.name}</strong>, an
+            experienced home nursing professional providing basic nursing and
+            healthcare support at your doorstep. From injections and wound
+            dressing to elderly and post-operative care, I help patients recover
+            comfortably in the place they feel safest — their own home.
+          </p>
+          <p className="mt-4 text-slate-600 leading-relaxed">
+            Every visit is carried out with strict hygiene, sterile supplies and
+            genuine compassion, serving {CONTACT.location} and nearby areas.
+          </p>
 
-          <div className="space-y-5 text-xl">
-             <p>
-               Name: <strong>Poornima Thakur</strong>
-            </p>
-            <p>
-              📞 Phone: <strong>+91 9557146926</strong>
-            </p>
+          <ul className="mt-8 grid sm:grid-cols-2 gap-3">
+            {[
+              "Experienced & reliable",
+              "Sterile, single-use supplies",
+              "Affordable per-visit pricing",
+              "Flexible day & evening slots",
+            ].map((t) => (
+              <li key={t} className="flex items-center gap-3 text-slate-700">
+                <span className="grid place-items-center w-6 h-6 rounded-full bg-brand-100 text-brand-600 shrink-0">
+                  <Icon name="check" className="w-3.5 h-3.5" />
+                </span>
+                <span className="text-sm">{t}</span>
+              </li>
+            ))}
+          </ul>
 
-            <p>
-              💬 WhatsApp: <strong>+91 8433128428</strong>
-            </p>
+          <a
+            href={waHref}
+            target="_blank"
+            rel="noreferrer"
+            className="mt-8 inline-flex items-center gap-2 rounded-full bg-brand-600 px-6 py-3 font-semibold text-white shadow-lg shadow-brand-600/30 hover:bg-brand-700 transition"
+          >
+            <Icon name="whatsapp" filled className="w-5 h-5" />
+            Talk to me
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
 
-            <p>
-              📍 Location: <strong>Dehradun</strong>
-            </p>
+function Services() {
+  return (
+    <section id="services" className="py-20 sm:py-24 bg-slate-50">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+        <SectionHeading
+          eyebrow="Services & Charges"
+          title="Care services we offer"
+          sub="Transparent per-visit pricing with no hidden charges. Final charges may vary slightly based on requirements and distance."
+        />
+
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {SERVICES.map((s, i) => (
+            <div
+              key={s.name}
+              className="reveal group relative flex flex-col rounded-3xl bg-white p-7 border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition"
+              style={{ transitionDelay: `${i * 40}ms` }}
+            >
+              {s.popular && (
+                <span className="absolute top-5 right-5 rounded-full bg-accent/15 px-3 py-1 text-xs font-semibold text-accent">
+                  Popular
+                </span>
+              )}
+              <span className="grid place-items-center w-14 h-14 rounded-2xl bg-brand-50 text-brand-600 group-hover:bg-brand-600 group-hover:text-white transition">
+                <Icon name={s.icon} className="w-7 h-7" />
+              </span>
+              <h3 className="mt-5 text-xl font-bold text-slate-900">{s.name}</h3>
+              <p className="mt-2 text-sm text-slate-600 leading-relaxed flex-1">
+                {s.desc}
+              </p>
+              <div className="mt-6 flex items-end justify-between border-t border-slate-100 pt-4">
+                <p>
+                  <span className="text-2xl font-extrabold text-slate-900">
+                    {s.price}
+                  </span>
+                  <span className="text-sm text-slate-500"> {s.unit}</span>
+                </p>
+                <a
+                  href={waHref}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="rounded-full bg-brand-50 px-4 py-2 text-sm font-semibold text-brand-700 hover:bg-brand-600 hover:text-white transition"
+                >
+                  Book
+                </a>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function WhyUs() {
+  return (
+    <section id="why" className="py-20 sm:py-24 bg-white">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+        <SectionHeading
+          eyebrow="Why Choose Us"
+          title="Care you can truly trust"
+          sub="We blend professional nursing skills with the warmth and comfort of home."
+        />
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {FEATURES.map((f, i) => (
+            <div
+              key={f.title}
+              className="reveal rounded-3xl bg-gradient-to-b from-slate-50 to-white p-7 border border-slate-100 text-center hover:border-brand-200 hover:shadow-lg transition"
+              style={{ transitionDelay: `${i * 50}ms` }}
+            >
+              <span className="mx-auto grid place-items-center w-14 h-14 rounded-2xl bg-brand-600 text-white shadow-lg shadow-brand-600/30">
+                <Icon name={f.icon} filled={f.icon === "heart"} className="w-7 h-7" />
+              </span>
+              <h3 className="mt-5 font-bold text-slate-900">{f.title}</h3>
+              <p className="mt-2 text-sm text-slate-600 leading-relaxed">
+                {f.desc}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Process() {
+  return (
+    <section className="py-20 sm:py-24 bg-brand-50">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+        <div className="reveal mx-auto max-w-2xl text-center mb-14">
+          <p className="text-sm font-semibold uppercase tracking-wider text-brand-600">
+            How It Works
+          </p>
+          <h2 className="mt-2 text-3xl sm:text-4xl font-extrabold text-slate-900">
+            Booking care is simple
+          </h2>
+        </div>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {STEPS.map((s, i) => (
+            <div
+              key={s.title}
+              className="reveal group relative rounded-3xl bg-white p-7 border border-brand-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition"
+              style={{ transitionDelay: `${i * 60}ms` }}
+            >
+              <span className="grid place-items-center w-12 h-12 rounded-2xl bg-gradient-to-br from-brand-500 to-brand-700 text-white font-extrabold text-lg shadow-lg shadow-brand-500/30">
+                {i + 1}
+              </span>
+              <h3 className="mt-5 font-bold text-slate-900">{s.title}</h3>
+              <p className="mt-2 text-sm text-slate-600 leading-relaxed">{s.desc}</p>
+              {i < STEPS.length - 1 && (
+                <span className="hidden lg:block absolute top-12 -right-3 text-brand-300 z-10">
+                  <Icon name="chevron" className="w-6 h-6" />
+                </span>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Testimonials() {
+  return (
+    <section id="reviews" className="py-20 sm:py-24 bg-slate-50">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+        <SectionHeading
+          eyebrow="Reviews"
+          title="Loved by families we serve"
+          sub="Real words from patients and families across Dehradun."
+        />
+        <div className="grid md:grid-cols-3 gap-6">
+          {TESTIMONIALS.map((t, i) => (
+            <figure
+              key={t.name}
+              className="reveal flex flex-col rounded-3xl bg-white p-7 border border-slate-100 shadow-sm"
+              style={{ transitionDelay: `${i * 60}ms` }}
+            >
+              <div className="flex gap-1 text-amber-400">
+                {Array.from({ length: t.rating }).map((_, idx) => (
+                  <Icon key={idx} name="star" filled className="w-5 h-5" />
+                ))}
+              </div>
+              <blockquote className="mt-4 text-slate-600 leading-relaxed flex-1">
+                "{t.text}"
+              </blockquote>
+              <figcaption className="mt-6 flex items-center gap-3">
+                <span className="grid place-items-center w-11 h-11 rounded-full bg-brand-100 font-bold text-brand-700">
+                  {t.name.charAt(0)}
+                </span>
+                <div>
+                  <p className="font-semibold text-slate-900">{t.name}</p>
+                  <p className="text-sm text-slate-500">{t.area}</p>
+                </div>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function FaqItem({ item, open, onToggle }) {
+  return (
+    <div className="reveal rounded-2xl bg-white border border-slate-100 overflow-hidden">
+      <button
+        onClick={onToggle}
+        className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left"
+      >
+        <span className="font-semibold text-slate-900">{item.q}</span>
+        <span
+          className={`grid place-items-center w-8 h-8 rounded-full bg-brand-50 text-brand-600 shrink-0 transition-transform ${
+            open ? "rotate-45" : ""
+          }`}
+        >
+          <Icon name="plus" className="w-4 h-4" />
+        </span>
+      </button>
+      <div
+        className={`grid transition-all duration-300 ${
+          open ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+        }`}
+      >
+        <div className="overflow-hidden">
+          <p className="px-6 pb-5 text-slate-600 leading-relaxed">{item.a}</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Faq() {
+  const [openIdx, setOpenIdx] = useState(0);
+  return (
+    <section className="py-20 sm:py-24 bg-white">
+      <div className="mx-auto max-w-3xl px-4 sm:px-6">
+        <SectionHeading
+          eyebrow="FAQ"
+          title="Questions, answered"
+          sub="Everything you need to know before booking your first visit."
+        />
+        <div className="space-y-3">
+          {FAQS.map((item, i) => (
+            <FaqItem
+              key={item.q}
+              item={item}
+              open={openIdx === i}
+              onToggle={() => setOpenIdx(openIdx === i ? -1 : i)}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Contact() {
+  const [sent, setSent] = useState(false);
+  const onSubmit = (e) => {
+    e.preventDefault();
+    const data = new FormData(e.currentTarget);
+    const msg = `Hi, I'm ${data.get("name")}. I need: ${data.get(
+      "need"
+    )}. Reach me at ${data.get("phone")}.`;
+    window.open(
+      `https://wa.me/${CONTACT.whatsappRaw}?text=${encodeURIComponent(msg)}`,
+      "_blank"
+    );
+    setSent(true);
+  };
+
+  const items = [
+    { icon: "phone", label: "Phone", value: CONTACT.phone, href: telHref },
+    {
+      icon: "whatsapp",
+      label: "WhatsApp",
+      value: CONTACT.whatsapp,
+      href: waHref,
+      filled: true,
+    },
+    { icon: "pin", label: "Location", value: CONTACT.location },
+  ];
+
+  return (
+    <section id="contact" className="py-20 sm:py-24 bg-slate-50">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 grid lg:grid-cols-2 gap-10">
+        <div className="reveal">
+          <p className="text-sm font-semibold uppercase tracking-wider text-brand-600">
+            Contact
+          </p>
+          <h2 className="mt-2 text-3xl sm:text-4xl font-extrabold text-slate-900">
+            Book a visit today
+          </h2>
+          <p className="mt-4 text-slate-600">
+            Call, WhatsApp, or send a quick request and we'll get back to you to
+            confirm a convenient time.
+          </p>
+
+          <div className="mt-8 space-y-4">
+            {items.map((it) => {
+              const Wrapper = it.href ? "a" : "div";
+              return (
+                <Wrapper
+                  key={it.label}
+                  {...(it.href
+                    ? { href: it.href, target: it.href.startsWith("http") ? "_blank" : undefined, rel: "noreferrer" }
+                    : {})}
+                  className="flex items-center gap-4 rounded-2xl bg-white p-4 border border-slate-100 hover:border-brand-200 transition"
+                >
+                  <span className="grid place-items-center w-12 h-12 rounded-xl bg-brand-50 text-brand-600">
+                    <Icon name={it.icon} filled={it.filled} className="w-6 h-6" />
+                  </span>
+                  <div>
+                    <p className="text-sm text-slate-500">{it.label}</p>
+                    <p className="font-semibold text-slate-900">{it.value}</p>
+                  </div>
+                </Wrapper>
+              );
+            })}
           </div>
         </div>
 
-        {/* DISCLAIMER */}
-        <div className="bg-yellow-50 p-6 text-center text-slate-700 border-t">
-          <p className="text-lg">
-            This service provides only basic nursing and healthcare support.
-            For emergency or serious medical conditions, please consult
-            a qualified doctor or hospital.
+        <form
+          onSubmit={onSubmit}
+          className="reveal rounded-3xl bg-white p-7 sm:p-8 border border-slate-100 shadow-lg"
+        >
+          <h3 className="text-xl font-bold text-slate-900">Request a callback</h3>
+          <p className="mt-1 text-sm text-slate-500">
+            Sends your details to us on WhatsApp.
+          </p>
+
+          <div className="mt-6 space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1.5">
+                Your name
+              </label>
+              <input
+                name="name"
+                required
+                placeholder="e.g. Rahul Sharma"
+                className="w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100 transition"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1.5">
+                Phone number
+              </label>
+              <input
+                name="phone"
+                required
+                type="tel"
+                placeholder="e.g. 98765 43210"
+                className="w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100 transition"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1.5">
+                What care do you need?
+              </label>
+              <textarea
+                name="need"
+                required
+                rows={3}
+                placeholder="e.g. Daily injection for my father at home"
+                className="w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100 transition resize-none"
+              />
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            className="mt-6 w-full inline-flex items-center justify-center gap-2 rounded-full bg-brand-600 px-6 py-3.5 font-semibold text-white shadow-lg shadow-brand-600/30 hover:bg-brand-700 transition"
+          >
+            <Icon name="whatsapp" filled className="w-5 h-5" />
+            Send request
+          </button>
+          {sent && (
+            <p className="mt-3 text-center text-sm text-accent font-medium">
+              Opening WhatsApp… thank you!
+            </p>
+          )}
+        </form>
+      </div>
+    </section>
+  );
+}
+
+function Disclaimer() {
+  return (
+    <section className="bg-amber-50 border-y border-amber-100">
+      <div className="mx-auto max-w-4xl px-4 sm:px-6 py-6 flex items-start gap-3 text-center justify-center">
+        <p className="text-sm text-amber-800 leading-relaxed">
+          <strong>Please note:</strong> This service provides only basic nursing
+          and healthcare support. For emergencies or serious medical conditions,
+          please consult a qualified doctor or hospital immediately.
+        </p>
+      </div>
+    </section>
+  );
+}
+
+function Footer() {
+  return (
+    <footer className="bg-slate-900 text-slate-300">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 py-14 grid gap-10 md:grid-cols-3">
+        <div>
+          <div className="flex items-center gap-2.5">
+            <span className="grid place-items-center w-10 h-10 rounded-xl bg-gradient-to-br from-brand-500 to-brand-700 text-white">
+              <Icon name="heart" filled className="w-5 h-5" />
+            </span>
+            <div className="leading-tight">
+              <p className="font-bold text-white">Poornima</p>
+              <p className="text-[11px] tracking-wide text-brand-300">
+                HOME NURSING CARE
+              </p>
+            </div>
+          </div>
+          <p className="mt-4 text-sm text-slate-400 max-w-xs leading-relaxed">
+            Compassionate, professional nursing care delivered at your doorstep
+            in {CONTACT.location}.
           </p>
         </div>
 
+        <div>
+          <h4 className="font-semibold text-white">Quick links</h4>
+          <ul className="mt-4 space-y-2 text-sm">
+            {NAV_LINKS.map((l) => (
+              <li key={l.href}>
+                <a href={l.href} className="hover:text-white transition">
+                  {l.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div>
+          <h4 className="font-semibold text-white">Get in touch</h4>
+          <ul className="mt-4 space-y-3 text-sm">
+            <li className="flex items-center gap-3">
+              <Icon name="phone" className="w-4 h-4 text-brand-400" />
+              <a href={telHref} className="hover:text-white">
+                {CONTACT.phone}
+              </a>
+            </li>
+            <li className="flex items-center gap-3">
+              <Icon name="whatsapp" filled className="w-4 h-4 text-brand-400" />
+              <a href={waHref} target="_blank" rel="noreferrer" className="hover:text-white">
+                {CONTACT.whatsapp}
+              </a>
+            </li>
+            <li className="flex items-center gap-3">
+              <Icon name="pin" className="w-4 h-4 text-brand-400" />
+              {CONTACT.location}
+            </li>
+          </ul>
+        </div>
       </div>
+      <div className="border-t border-white/10">
+        <p className="mx-auto max-w-6xl px-4 sm:px-6 py-5 text-center text-sm text-slate-500">
+          © {new Date().getFullYear()} Poornima Home Nursing Care. All rights
+          reserved.
+        </p>
+      </div>
+    </footer>
+  );
+}
+
+function FloatingActions() {
+  return (
+    <div className="fixed bottom-5 right-5 z-50 flex flex-col gap-3">
+      <a
+        href={waHref}
+        target="_blank"
+        rel="noreferrer"
+        aria-label="Chat on WhatsApp"
+        className="grid place-items-center w-14 h-14 rounded-full bg-[#25D366] text-white shadow-xl shadow-emerald-500/40 hover:scale-105 transition"
+      >
+        <Icon name="whatsapp" filled className="w-7 h-7" />
+      </a>
+      <a
+        href={telHref}
+        aria-label="Call now"
+        className="grid place-items-center w-14 h-14 rounded-full bg-brand-600 text-white shadow-xl shadow-brand-600/40 hover:scale-105 transition"
+      >
+        <Icon name="phone" className="w-6 h-6" />
+      </a>
+    </div>
+  );
+}
+
+function App() {
+  useReveal();
+  return (
+    <div className="min-h-screen bg-white text-slate-900">
+      <Navbar />
+      <main>
+        <Hero />
+        <About />
+        <Services />
+        <WhyUs />
+        <Process />
+        <Testimonials />
+        <Faq />
+        <Contact />
+        <Disclaimer />
+      </main>
+      <Footer />
+      <FloatingActions />
     </div>
   );
 }
