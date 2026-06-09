@@ -2,7 +2,8 @@ import { useState } from "react";
 import Icon from "./components/Icon.jsx";
 import useReveal from "./useReveal.js";
 import { CONTACT, SERVICES, TESTIMONIALS, FAQS } from "./data.js";
-
+import nurse1 from "./assets/images/nurse1.jpg";
+import nurse2 from "./assets/images/nurse2.jpg";
 const telHref = `tel:${CONTACT.phoneRaw}`;
 const waHref = `https://wa.me/${CONTACT.whatsappRaw}?text=${encodeURIComponent(
   "Hi, I would like to book a home nursing visit."
@@ -229,22 +230,17 @@ function About() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6 grid lg:grid-cols-2 gap-12 items-center">
         <div className="reveal relative">
           <div className="grid grid-cols-2 gap-4">
-            {[
-              { icon: "heart", t: "Compassion", c: "from-rose-400 to-rose-600" },
-              { icon: "shield", t: "Safety", c: "from-brand-400 to-brand-600" },
-              { icon: "home", t: "At Home", c: "from-emerald-400 to-emerald-600" },
-              { icon: "clock", t: "On Time", c: "from-amber-400 to-orange-500" },
-            ].map((b, i) => (
-              <div
-                key={b.t}
-                className={`rounded-3xl bg-gradient-to-br ${b.c} p-6 text-white shadow-lg ${
-                  i % 2 === 1 ? "mt-6" : ""
-                }`}
-              >
-                <Icon name={b.icon} filled={b.icon === "heart"} className="w-8 h-8" />
-                <p className="mt-4 font-semibold">{b.t}</p>
-              </div>
-            ))}
+            <img
+    src={nurse1}
+    alt="Home Nursing Care"
+    className="rounded-3xl shadow-lg h-72 w-full object-cover"
+  />
+
+  <img
+    src={nurse2}
+    alt="Patient Care at Home"
+    className="rounded-3xl shadow-lg h-72 w-full object-cover mt-10"
+  />
           </div>
         </div>
 
