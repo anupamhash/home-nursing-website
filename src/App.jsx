@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Icon from "./components/Icon.jsx";
 import useReveal from "./useReveal.js";
 import { CONTACT, SERVICES, TESTIMONIALS, FAQS } from "./data.js";
@@ -15,6 +15,7 @@ const NAV_LINKS = [
   { label: "Reviews", href: "#reviews" },
   { label: "About", href: "#about" },
   { label: "Contact", href: "#contact" },
+  { label: "Feedback", href: "#feedback" },
 ];
 
 function Navbar() {
@@ -114,7 +115,7 @@ function Hero() {
           </h1> */}
           <h1 className="mt-6 text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-[1.1] text-slate-900">
           Home Nursing Services &
-          <span className="bg-gradient-to-r from-brand-600 to-accent bg-clip-text text-transparent">
+          &nbsp;<span className="bg-gradient-to-r from-brand-600 to-accent bg-clip-text text-transparent">
             Patient Care at Home
           </span>
         </h1>
@@ -221,6 +222,249 @@ function SectionHeading({ eyebrow, title, sub }) {
       </h2>
       {sub && <p className="mt-4 text-slate-600">{sub}</p>}
     </div>
+  );
+}
+function Feedback() {
+  const [name, setName] = useState("");
+  const [message, setMessage] = useState("");
+  const [rating, setRating] = useState(5);
+  const [feedbacks, setFeedbacks] = useState([]);
+  const [current, setCurrent] = useState(0);
+
+  useEffect(() => {
+    const saved =
+      JSON.parse(localStorage.getItem("feedbacks")) || [];
+    setFeedbacks(saved);
+  }, []);
+
+  useEffect(() => {
+    if (feedbacks.length <= 1) return;
+
+    const timer = setInterval(() => {
+      setCurrent((prev) =>
+        prev >= feedbacks.length - 1 ? 0 : prev + 1
+      );
+    }, 5000);
+
+    return () => clearInterval(timer);
+  }, [feedbacks]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const newFeedback = {
+      name,
+      message,
+      rating,
+      date: new Date().toLocaleDateString(),
+    };
+
+    const updated = [newFeedback, ...feedbacks];
+
+    setFeedbacks(updated);
+    localStorage.setItem(
+      "feedbacks",
+      JSON.stringify(updated)
+    );
+
+    setName("");
+    setMessage("");
+    setRating(5);
+  };
+
+  const nextSlide = () => {
+    setCurrent((prev) =>
+      prev >= feedbacks.length - 1 ? 0 : prev + 1
+    );
+  };
+
+  const prevSlide = () => {
+    setCurrent((prev) =>
+      prev === 0 ? feedbacks.length - 1 : prev - 1
+    );
+  };
+
+  const visibleFeedbacks =
+    feedbacks.length <= 3
+      ? feedbacks
+      : feedbacks.slice(current, current + 3).length === 3
+      ? feedbacks.slice(current, current + 3)
+      : [
+          ...feedbacks.slice(current),
+          ...feedbacks.slice(
+            0,
+            3 - feedbacks.slice(current).length
+          ),
+        ];
+
+  return (
+    <section id="feedback" className="py-20 bg-slate-50">
+      <div className="max-w-7xl mx-auto px-4">
+
+        {/* Heading */}
+        <div className="text-center mb-12">
+          <p className="text-brand-600 font-semibold uppercase tracking-wider">
+            Testimonials
+          </p>
+
+          <h2 className="text-4xl font-extrabold text-slate-900 mt-2">
+            Customer Feedback
+          </h2>
+
+          <p className="mt-4 text-slate-600">
+            What our patients and their families say about our services
+          </p>
+        </div>
+
+        {/* Feedback Form */}
+        <form
+          onSubmit={handleSubmit}
+          className="bg-white p-6 rounded-3xl shadow-lg mb-14"
+        >
+          <input
+            type="text"
+            placeholder="Your Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+            className="w-full border rounded-xl p-3 mb-4"
+          />
+
+          {/* Rating */}
+          <div className="mb-4">
+            <label className="block mb-2 font-medium text-slate-700">
+              Rating
+            </label>
+
+            <div className="flex gap-2 text-3xl cursor-pointer">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <span
+                  key={star}
+                  onClick={() => setRating(star)}
+                  className={
+                    star <= rating
+                      ? "text-yellow-500"
+                      : "text-slate-300"
+                  }
+                >
+                  ★
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <textarea
+            placeholder="Write your feedback"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            required
+            rows="4"
+            className="w-full border rounded-xl p-3 mb-4"
+          />
+
+          <button
+            type="submit"
+            className="bg-brand-600 text-white px-6 py-3 rounded-xl hover:bg-brand-700 transition"
+          >
+            Submit Feedback
+          </button>
+        </form>
+
+        {/* Feedback Slider */}
+        {feedbacks.length > 0 && (
+          <div className="relative">
+
+            {/* Left Arrow */}
+            <button
+              onClick={prevSlide}
+              className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white rounded-full shadow-lg items-center justify-center hover:bg-slate-100"
+            >
+              ←
+            </button>
+
+            {/* Cards */}
+            <div className="grid md:grid-cols-3 gap-6 px-0 md:px-12">
+
+              {(window.innerWidth < 768
+                ? [feedbacks[current]]
+                : visibleFeedbacks
+              ).map((item, index) => (
+                <div
+                  key={index}
+                  className="bg-white rounded-3xl p-7 shadow-lg border border-slate-100 hover:shadow-xl transition"
+                >
+
+                  {/* Stars */}
+                  <div className="flex gap-1 text-xl mb-4">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <span
+                        key={star}
+                        className={
+                          star <= item.rating
+                            ? "text-yellow-500"
+                            : "text-slate-300"
+                        }
+                      >
+                        ★
+                      </span>
+                    ))}
+                  </div>
+
+                  <p className="text-slate-700 leading-relaxed min-h-[120px]">
+                    {item.message}
+                  </p>
+
+                  <div className="border-t mt-6 pt-4">
+                    <div className="flex items-center justify-between">
+                      <h4 className="font-bold text-lg">
+                        {item.name}
+                      </h4>
+
+                      <span className="text-sm font-semibold text-yellow-600">
+                        {item.rating}/5 ★
+                      </span>
+                    </div>
+
+                    <p className="text-sm text-slate-500">
+                      Dehradun
+                    </p>
+
+                    <p className="text-xs text-slate-400 mt-2">
+                      {item.date}
+                    </p>
+                  </div>
+
+                </div>
+              ))}
+            </div>
+
+            {/* Right Arrow */}
+            <button
+              onClick={nextSlide}
+              className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white rounded-full shadow-lg items-center justify-center hover:bg-slate-100"
+            >
+              →
+            </button>
+
+            {/* Dots */}
+            <div className="flex justify-center mt-8 gap-2">
+              {feedbacks.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setCurrent(i)}
+                  className={`w-3 h-3 rounded-full transition ${
+                    current === i
+                      ? "bg-orange-500"
+                      : "bg-slate-300"
+                  }`}
+                />
+              ))}
+            </div>
+
+          </div>
+        )}
+      </div>
+    </section>
   );
 }
 
@@ -687,6 +931,7 @@ function App() {
         <Testimonials />
         <Faq />
         <Contact />
+         <Feedback />
         <Disclaimer />
       </main>
       <Footer />
